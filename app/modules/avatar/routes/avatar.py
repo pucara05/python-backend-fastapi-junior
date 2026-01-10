@@ -1,5 +1,6 @@
 from app.modules.avatar.schemas.avatar import AvatarCreate, AvatarUpdate
 from fastapi import APIRouter, HTTPException
+from app.modules.avatar.services import avatar_service
 
 router = APIRouter (
     prefix="/avatars",
@@ -8,23 +9,32 @@ router = APIRouter (
 
 @router.get("/")
 def get_avatars():
-    return {"message": "avatar list endpoint  (not implemented yet)"}
+    return avatar_service.get_all_avatars()
 
 @router.get("/{avatar_id}")
 def get_avatar(avatar_id: int):
-    return {"message": f"get avatar {avatar_id} (not implemented yet)"}
+    avatar = avatar_service.get_avatar_by_id(avatar_id)
+    if not avatar:
+        raise HTTPException(status_code=404, detail="Avatar not found")
+    return avatar
 
 
 @router.post("/")
 def create_avatar(avatar: AvatarCreate):
-    return {"message": "Create avatar",
-     "data": avatar}
+    return avatar_service.create_avatar(avatar)
+
 
 @router.put("/{avatar_id}")
 def update_avatar(avatar_id: int, avatar: AvatarUpdate):
-    return {"message": f"update avatar {avatar_id}",
-         "data": avatar}
+    updated = avatar_service.update_avatar(avatar_id, avatar)
+    if not updated:
+        raise HTTPException(status_code=404, detail="Avatar not found")
+    return updated
+
 
 @router.delete("/{avatar_id}")
 def delete_avatar(avatar_id: int):
-     return {"message": f"Delete avatar {avatar_id} (not implemented yet)"}
+    deleted = avatar_service.delete_avatar(avatar_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Avatar not found")
+        return deleted

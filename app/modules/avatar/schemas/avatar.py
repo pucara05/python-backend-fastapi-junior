@@ -16,4 +16,5 @@ class AvatarUpdate(BaseModel):
 
     class AvatarResponse(AvatarBase):
         id: int
+
         
