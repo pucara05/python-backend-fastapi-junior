@@ -1,4 +1,4 @@
-from app.modules.avatar.schemas.schemas_avatar import AvatarCreate, AvatarUpdate
+from app.modules.avatar.schemas.avatar import AvatarCreate, AvatarUpdate
 from fastapi import APIRouter, HTTPException
 
 router = APIRouter (
